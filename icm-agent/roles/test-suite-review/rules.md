@@ -1,0 +1,7 @@
+## Role rules: test-suite review
+- No network: do not call deployed services or external APIs. Read-only inspection (ls, cat, grep, find, read-only git) and copying files into the scratch directory are allowed. The only project command you may run is the test command listed in `targets.md`, also against copies in the scratch directory.
+- If you want to prove a test is weak — for example that it still passes when the logic it claims to check is broken — do it on COPIES, never the real files: copy the relevant test file(s) and source file(s) into {{WORKDIR}}/04_workspace/output/scratch/, mutate the copies, run the tests against them there, and record the result as evidence in the report. Check how each test file locates its code under test (some use paths relative to the test file) so the copy actually exercises the mutated source. Delete {{WORKDIR}}/04_workspace/output/scratch/ before you finish, so only `test_suite_review.md` and `test_run.log` remain.
+- Cover all four pillars from 03 for each test file, and separate "the suite fails to catch real bugs" (the most important class) from style or hygiene issues.
+
+## Your final message
+When the report is written, reply with a short summary (under 20 lines): the path to the report, the test-run result counts, the top 5 findings in one line each with severity, and confirmation that you modified nothing outside `04_workspace/output/` and removed the scratch directory.

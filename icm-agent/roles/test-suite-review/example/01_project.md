@@ -1,0 +1,12 @@
+# Project Context
+- Target Application: `acme-billing` — a FastAPI service that issues invoices and charges cards through a payment-provider client:
+  - `billing/invoices.py` — invoice creation, tax rounding and currency conversion.
+  - `billing/payments.py` — retries and idempotency keys around the payment-provider client.
+  - `billing/webhooks.py` — verifies payment-provider webhook signatures and applies the events.
+- Test Framework: Pytest. Unit tests stub the payment-provider client and the database session; no network. Run with `python3 -m pytest tests/unit -q`.
+  - `tests/unit/` — `test_invoices.py`, `test_payments.py`, `test_webhooks.py`.
+  - `tests/integration/` — needs a Postgres container; not part of the unit run.
+  - Known state: 3 failures, all in `test_webhooks.py` (the fixture signs payloads with an outdated secret format). CI runs only `tests/unit`, on pull requests.
+  - Local Python is 3.12; production runs 3.11.
+- Available Tools for Review: Static analysis of test files, test execution logs, coverage reports.
+- Artifact Locations: Test files to be reviewed, the code under test and the test command are listed by absolute path in `04_workspace/input/targets.md`; nothing is copied into `04_workspace/input/`.
